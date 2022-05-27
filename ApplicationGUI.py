@@ -38,6 +38,8 @@ class Ui_MainWindow(object):
         ApplicationDatabase.getAttractions(filters=ApplicationFilterRequest.FilterRequest(attributeList[0], attributeList[1], attributeList[2], None, None, None))
         attributeList = [None, None, None, None, None, None]
 
+
+
     def setupUi(self, MainWindow):
         # Sets up the window container
         MainWindow.setObjectName("MainWindow")
@@ -86,24 +88,21 @@ class Ui_MainWindow(object):
         self.groupBox.setFlat(True)
         self.groupBox.setObjectName("groupBox")
 
+
+
         # Filtering by State - Format: (Label: ComboBox)
         self.stateFilterLabel = self.createLabel("groupBox",5, 25, 50, 50)
         self.stateFilterComboBox = self.createComboBox("groupBox",40, 40, 157, 26)
-        self.stateFilterComboBox.addItems(["None","Alabama","Alaska","Arizona","Arkansas","California",
-                                           "Colorado","Connecticut","Delaware","Florida","Georgia",
-                                           "Hawaii","Idaho","Illinois","Indiana","Iowa","Kansas",
-                                           "Kentucky","Louisiana","Maine","Maryland","Massachusetts","Michigan",
-                                           "Minnesota","Mississippi","Missouri","Montana","Nebraska","Nevada",
-                                           "New Hampshire","New Jersey","New Mexico","New York","North Carolina",
-                                           "North Dakota","Ohio","Oklahoma","Oregon","Pennsylvania","Rhode Island",
-                                           "South Carolina","South Dakota","Tennessee","Texas","Utah","Vermont",
-                                           "Virginia","Washington","West Virginia","Wisconsin","Wyoming"])
+        self.stateFilterComboBox.addItem("None", ["None"])
+        self.stateFilterComboBox.addItem("Alabama", ["None", "Huntsville", "Birmingham", "Montgomery", "Mobile", "Tuscaloosa"])
+        self.stateFilterComboBox.addItem("Alaska", ["None", "Anchorage", "Juneau", "Fairbanks", "Badger", "Knik-Fairview"]) #last 3 have no data yet
+        self.stateFilterComboBox.activated.connect(self.selectCityFromState)
         self.stateFilterComboBox.activated.connect(self.getCurrentFieldTexts)
 
         # Filtering by City - Format: (Label: ComboBox)
         self.cityFilterLabel = self.createLabel("groupBox", 5, 65, 50, 50)
         self.cityFilterComboBox = self.createComboBox("groupBox", 40, 80, 157, 26)
-        self.cityFilterComboBox.addItems(["None", "City1", "City2", "Huntsville", "Birmingham"])
+        self.cityFilterComboBox.addItems(["None"])
         self.cityFilterComboBox.activated.connect(self.getCurrentFieldTexts)
 
         # Filtering by Type - Format: (Label: ComboBox)
@@ -150,6 +149,11 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def selectCityFromState(self, index):
+        self.cityFilterComboBox.clear()
+        self.cityFilterComboBox.addItems(self.stateFilterComboBox.itemData(index))
+        #self.stateFilterComboBox.ItemData(index)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate

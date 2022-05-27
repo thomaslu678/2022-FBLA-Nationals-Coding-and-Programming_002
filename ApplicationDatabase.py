@@ -24,7 +24,7 @@ def getAttractions(filters):
         cur.execute(sql)
         # display the PostgreSQL database server version
         results = cur.fetchall()
-        print(results)
+        print(*results, sep = "\n")
         # close the communication with the PostgreSQL
         cur.close()
         return results
